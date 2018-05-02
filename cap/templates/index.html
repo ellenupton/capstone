@@ -1,0 +1,348 @@
+<!-- HTML code for the Google Maps API and Bootstrap Navigation bar -->
+
+<!DOCTYPE html>
+<link rel="stylesheet" href="{{ STATIC_URL }}style.css" />
+<html>
+  <title> Threat Tracker </title>
+  <head>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">Worldwide Threat Tracker</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="/">Home</a></li>
+      <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Filter
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Terror Attacks</a></li>
+          <li><a href="#">Natural Disasters</a></li>
+        </ul>
+      </li>
+      <li><a href="/submit/">Submission</a></li>
+      <li><a href="#">Download</a></li>
+      
+    </ul>
+  </div>
+  
+</nav>
+
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    
+    
+    <style>
+      /* Map Code starts below */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      var map;
+      
+       
+    
+      (function() {
+
+	window.onload = function() {
+
+		// Creating a new map
+		var map = new google.maps.Map(document.getElementById("map"), {
+          center: new google.maps.LatLng(40.0, 14.6),
+          zoom: 2,
+          mapTypeId: 'satellite'
+        });
+        
+
+		// Creating the JSON data
+		//where integrated database will go
+		var json = [
+		    {
+		        "title": "Karachi",
+		        "lat": 24.949833,
+		        "lng": 66.966097,
+		        "group": 'TTP',
+		        "description": "<strong>Karachi, Pakistan:</strong> TTP attack: 01/01/2013: An explosive device was discovered near the private residence of an Awami National Party (ANP) activist in Orangi Town, Sindh province, Pakistan. The device was safely defused without causing injury. No group claimed responsibility for the unsuccessful attack; however, officials attribute the incident to Tehrik-i-Taliban Pakistan (TTP)."
+		    },
+		    {
+		        "title": "Taftnaz",
+		        "lat": 35.993878,
+		        "lng": 36.779602,
+		        "group": 'Al-Nushra',
+		        "description": "<strong>Taftnaz, Syria: </strong> Al-Nushra Front attack: 01/02/2013: Assailants fired mortar shells and guns at helicopters on a military base near Taftanaz town, Idlib governorate, Syria. Four assailants were killed in the return fire and an unknown number were injured; in addition, the base and helicopters were damaged. Officials attributed the incident to al-Nusrah Front and the Free Syrian Army."
+		    },
+		    {
+		        "title": "Song",
+		        "lat": 9.824977,
+		        "lng": 12.624779,
+		        "group": 'Boko Haram',
+		        "description": "<strong>Song, Nigeria:</strong> Boko Haram attack: 01/03/2013: Approximately 100 assailants attacked a police station with machine guns and grenades in Song town, Adamawa state, Nigeria. Four people were killed in the ensuing shootout, including a police officer, a soldier, and two civilians, and two more people were injured. The police station was also set on fire. This was one of two locations the assailants attacked on the same morning. No group claimed responsibility for the incidents; however, sources suspect that Boko Haram was involved."
+		    },
+		    {
+		        "title": "Mardin",
+		        "lat": 37.301367,
+		        "lng": 41.521964,
+		        "group": 'Kurdistan Workers Party (PKK)',
+		        "description": "<strong>Mardin, Somalia:</strong> Kurdistan Workers Party (PKK) attack: 01/19/2013: An explosive device detonated on the Kirkuk-Ceyhan petroleum pipeline between Sirnak and Midyat in Yayvantepe, Mardin province, Turkey. No one was injured in the blast; however, the gas flow had to be diverted to an alternative pipeline. This was the second of two attacks on the pipeline within a day. Hezen Parastina Gel, a sub-group of the Kurdistan Workers' Party (PKK) claimed responsibility for the attack."
+		    },
+		    {
+		        "title": "Cauca",
+		        "lat": 3.05,
+		        "lng": -76.416667,
+		        "group": 'Revolutionary Armed Forces of Colombia (FARC)',
+		        "description": "<strong>Cauca, Colombia:</strong> Revolutionary Armed Forces of Colombia (FARC) attack: 01/20/2013: Gunmen fired at a Bell helicopter attempting to land with police reinforcements in Caloto, Cauca department, Colombia. No one was injured in the attack. No group claimed responsibility for the incident; however, news sources attribute the attack to the Revolutionary Armed Forces of Colombia (FARC)."
+		    },
+		    {
+		        "title": "Jharkhand",
+		        "lat": 23.943821,
+		        "lng": 85.790076,
+		        "group": 'Communist Party of India - Maoist (CPI-Maoist)',
+		        "description": "<strong>Jharkhand, India:</strong> Communist Party of India - Maoist (CPI-Maoist) attack: 01/20/2013: Four landmines detonated on a group of Central Reserve Police Force (CRPF) officers returning from a raid near the Mahua Tand police station in Jamnijara, Jharkhand state, India. Eleven police officers were injured in the blasts. No group claimed responsibility for the attack; however, police arrested a member of the Communist Party of India-Maoist (CPI-M) in complicity with the incident."
+		    },
+		    {
+		        "title": "Basilan",
+		        "lat": 6.550446,
+		        "lng": 122.106467,
+		        "group": 'Abu Sayyaf Group (ASG)',
+		        "description": "<strong>Basilan, Philippines:</strong> Abu Sayyaf Group (ASG) attack: 01/22/2013: Assailants opened fire on Filipino soldiers in Ungkaya Puka town, Basilan province, Philippines. Six soldiers were injured in the attack. No group claimed responsibility; however, the army suspects a joint effort by the Moro Islamic Liberation Front (MILF) and Abu Sayyaf Group (ASG)."
+		    },
+		    {
+		        "title": "Helmand",
+		        "lat": 31.385607,
+		        "lng": 67.199737,
+		        "group": 'Taliban',
+		        "description": "<strong>Helmand, Afghanistan:</strong> Taliban attack: 01/22/2013: A landmine exploded on a police patrol in Basolan area, Naveh Barakza'I, Helmand province, Afghanistan. Two police officers were killed and one was injured in the attack. One person was also arrested in connection with the blast. The Taliban claimed responsibility for the attack."
+		    },
+		    {
+		        "title": "Sindh",
+		        "lat": 24.849992,
+		        "lng": 64.296067,
+		        "group": 'Tehrik-i-Taliban Pakistan (TTP)',
+		        "description": "<strong>Sindh, Pakistan:</strong> Tehrik-i-Taliban Pakistan (TTP) attack: 01/24/2013: An explosive device placed in a garbage dump was remotely detonated in the Landhi area of Karachi, Sindh, Pakistan. The bomb was targeting respondents to an initial explosion at the same site. Four people were killed and at least 13 people injured. No group claimed responsibility; however, a police official attributed the attack to the Tehrik-i-Taliban Pakistan (TTP)."
+		    },
+		    {
+		        "title": "Marib",
+		        "lat": 15.450333,
+		        "lng": 45.019821,
+		        "group": 'Al-Qaida in the Arabian Peninsula (AQAP)',
+		        "description": "<strong>Marib, Yemen:</strong> Tehrik-i-Taliban Pakistan (TTP) attack: 01/25/2013: Attackers blew up a bomb on the Ras Isa Pipeline in Sirwah, Marib governorate, Yemen. No one was injured, but the pipeline was slightly damaged in the attack. No group claimed responsibility; however, a source speculates the perpetrators had links to Al-Qaida in the Arabian Peninsula (AQAP)."
+		    },
+		    {
+		        "title": "Bannu",
+		        "lat": 32.988889,
+		        "lng": 70.605556,
+		        "group": 'Unknown',
+		        "description": "<strong>Bannu, Pakistan:</strong> Unknown attack: 01/01/2013: An explosive device was discovered in Bannu area, Khyber Pakhtunkhwa province, Pakistan. The device was safely defused without causing injury. No group claimed responsibility for the unsuccessful incident."
+		    },
+		    {
+		        "title": "Tuz Khormato",
+		        "lat": 34.886283,
+		        "lng": 44.629025,
+		        "group": 'Unknown',
+		        "description": "<strong>Tuz Khormato, Iraq:</strong> Unknown attack: 01/01/2013: An explosives-laden vehicle detonated in Tuz-Khormato city, Saladin, Iraq. This was one of two coordinated attacks at the same site. This first explosion was designed to draw first responders who were targeted in the second set of explosions. One person was killed and 10 more were injured across the attacks. No group claimed responsibility for the incidents."
+		    },
+		    {
+		        "title": "Tuz Khormato",
+		        "lat": 34.886283,
+		        "lng": 44.629025,
+		        "group": 'Unknown',
+		        "description": "<strong>Tuz Khormato, Iraq:</strong> Unknown attack: 01/01/2013: At least two explosives detonated in Tuz-Khormato city, Saladin, Iraq. This was one of two coordinated attacks at the same site. An earlier explosion was designed to draw first responders who were targeted in this second set of explosions. One person was killed and 10 more were injured across the coordinated attacks. No group claimed responsibility for the incidents."
+		    },
+		    {
+		        "title": "Karachi",
+		        "lat": 24.871216,
+		        "lng": 67.338419,
+		        "group": 'Unknown',
+		        "description": "<strong>Karachi, Pakistan:</strong> Tehrik-i-Taliban Pakistan (TTP) attack: 01/01/2013: An explosive device was discovered near the Ghaghar Phattak railway tracks in Steel Town, Sindh province, Pakistan. The device was safely defused without causing injury. No group claimed responsibility for the unsuccessful incident."
+		    },
+		    {
+		        "title": "Kirkuk",
+		        "lat": 35.471855,
+		        "lng": 44.391518,
+		        "group": 'Unknown',
+		        "description": "<strong>Kirkuk, Iraq:</strong> Unknown attack: 01/01/2013: An explosive device detonated targeting a police patrol in Kirkuk city, Kirkuk, Iraq. Two police officers were injured in the blast. No group claimed responsibility for the incident."
+		    },
+		    {
+		        "title": "Besima",
+		        "lat": 27.909573,
+		        "lng": 45.019821,
+		        "group": 'Unknown',
+		        "description": "<strong>Besima, Pakistan:</strong> Unknown attack: 01/01/2013: Assailants opened fire on Under-Secretary Saifuddin Baloch's vehicle in the Besima area of Kharan district, Balochistan province, Pakistan. The government official and his driver were killed in the attack and a third man was injured. No group claimed responsibility for the incident."
+		    },
+		    {
+		        "title": "Machh",
+		        "lat": 29.867169,
+		        "lng": 67.335232,
+		        "group": 'Unknown',
+		        "description": "<strong>Machh, Pakistan:</strong> Unknown attack: 01/01/2013: Assailants on a motorcycle opened fire on Mohammad Ali in Machh bazaar, Balochistan province, Pakistan. Mohammad Ali, the warden of Machh jail and a member of the Hazara community, was killed in the attack. No group claimed responsibility for the incident."
+		    },
+		    {
+		        "title": "Sarband",
+		        "lat": 33.957249,
+		        "lng": 71.503402,
+		        "group": 'Unknown',
+		        "description": "<strong>Sarband, Pakistan:</strong> Unknown attack: 01/01/2013: Approximately 70 kilograms of explosives were discovered outside a tribal elder's house in Sarband area, Khyber Pakhtunkhwa province, Pakistan. The device was safely defused without incident. No group claimed responsibility for the unsuccessful incident."
+		    },
+		    {
+		        "title": "Cagayan",
+		        "lat": 16.35,
+		        "lng": 121.7,
+		        "group": 'Unknown',
+		        "description": "<strong>Cagayan, Philippines:</strong> Unknown attack: 01/01/2013: Two assailants opened fire on Alfredo Almuedo as he was staffing a checkpoint monitoring illegal logging in Villa Sur village, Quirino province, Philippines. Almuedo, an official from the City Environment and Natural Resources Office (CENRO), was killed in the attack. No group claimed responsibility for the incident."
+		    },
+		    {
+		        "title": "Fallujah",
+		        "lat": 33.3648,
+		        "lng": 43.791283,
+		        "group": 'Unknown',
+		        "description": "<strong>Fallujah, Iraq:</strong> Unknown attack: 01/01/2013: A roadside bomb detonated near a military patrol in al-Shurtta, Fallujah city, Al Anbar, Iraq. One soldier was killed and another one was injured in the explosion. No group claimed responsibility for the incident."
+		    },
+		    {
+		        "title": "Abu Ghraib",
+		        "lat": 33.291944,
+		        "lng": 44.065556,
+		        "group": 'Unknown',
+		        "description": "<strong>Abu Ghraib, Iraq:</strong> Unknown attack: 01/01/2013: An explosive device detonated targeting a police patrol in Abu Ghraib city, Al Anbar governorate, Iraq. The explosion struck civilians instead, killing two people and injuring a third person. No group claimed responsibility for the incident."
+		    },
+		    {
+		        "title": "Jamrud",
+		        "lat": 33.999691,
+		        "lng": 71.382956,
+		        "group": 'Unknown',
+		        "description": "<strong>Jamrud, Pakistan:</strong> Unknwon attack: 01/01/2013: An explosive device detonated at a private residence in Jamrud tehsil, Khyber agency, Federally Administered Tribal Areas, Pakistan. The house belonged to a polio campaigner; the campaigner and his family were not injured in the blast, although the house was damaged. No group claimed responsibility for the incident."
+		    },
+		    {
+		    	"title": "Khyber District",
+		        "lat": 34.011514,
+		        "lng": 71.284218,
+		        "group": 'Unknown',
+		        "description": "<strong>Kyber District, Pakistan:</strong>Assailants fired a mortar shell in the Akakhel area of Bara tehsil, Khyber Agency, Federally Administered Tribal Areas, Pakistan. The mortar landed near a group of school children; two students were killed in the blast and another five were injured. No group claimed responsibility for the incident."
+		    },
+		     {
+		    	"title": "Abraka",
+		        "lat": 5.789432,
+		        "lng": 6.102347,
+		        "group": 'Unknown',
+		        "description": "<strong>Abraka, Nigeria:</strong>Approximately eight assailants abducted Martins Denedo from his private residence in Abraka area, Delta state, Nigeria. Denado was the treasurer of the Senior Staff Association of Nigerian Universities (SSANU). Police rescued him the same day, killing three of the kidnappers and arresting three more."
+		    },
+		    {
+		    	"title": "Swabi",
+		        "lat": 34.279967,
+		        "lng": 72.516399,
+		        "group": 'Unknown',
+		        "description": "<strong>Swabi, Pakistan:</strong>Assailants opened fire on a vehicle carrying charity workers in the Sher Afzal Banda area of Swabi district, Khyber Pakhtunkhwa province, Pakistan. The workers, from the Support with Working Solutions (SWWS) organization, were providing medical and education services. Seven people were killed in the attack and one person was injured. No group claimed responsibility for the incident; however, officials suspect that Tehrik-i-Taliban Pakistan (TTP) was involved."
+		    },
+		    {
+		    	"title": "Tikrit",
+		        "lat": 34.604954,
+		        "lng": 43.685017,
+		        "group": 'Unknown',
+		        "description": "<strong>Tikrit, Iraq:</strong>An explosive device detonated at the house of an officer from the Nationality Department in Tikrit city, Saladin, Iraq. The house was under construction at the time of the blast and Major Jassem al-Ugeili, the owner, was not injured. This was one of two blasts in the same area on the same day. No group claimed responsibility for the incident."
+		    },
+		    {
+		    	"title": "Tikrit",
+		        "lat": 34.613996,
+		        "lng": 43.67456,
+		        "group": 'Unknown',
+		        "description": "<strong>Tikrit, Iraq:</strong> Seven explosive devices were discovered in central Tikrit city, Saladin, Iraq. The devices were safely defused without causing injury. No group claimed responsibility for the unsuccessful incident."
+		    },
+		    {
+		    	"title": "Unknown",
+		        "lat": 26.95635,
+		        "lng": 70.800476,
+		        "group": 'Unknown',
+		        "description": "<strong>Rajasthan, India:</strong>Two rockets were fired in the Ramgarh area of Jaisalmer District, Rajasthan state, India. Two children were killed in the explosions. No group claimed responsibility for the incident."
+		        
+		    },
+		    {
+		    	"title": "Kirkuk",
+		        "lat": 35.467381,
+		        "lng": 44.378843,
+		        "group": 'Unknown',
+		        "description": "<strong>Kirkuk, Iraq:</strong> Assailants opened fire on the vehicle of a Sahwa Council leader in Kirkuk district, Kirkuk, Iraq. The leader and his aide were killed in the attack. No group claimed responsibility for the incident."
+		    },
+		    {
+		    	"title": "Tarmiyah",
+		        "lat": 33.666282,
+		        "lng": 44.372993,
+		        "group": 'Unknown',
+		        "description": "<strong>Tarmiyah, Iraq:</strong> A roadside bomb detonated near a military patrol in Al Tarmiyah area, Baghdad, Iraq. One military officer and three soldiers were killed in the blast. No group claimed responsibility for the incident."
+		    },
+		    {
+		    	"title": "Unknown",
+		        "lat": 7.917793,
+		        "lng": -72.889652,
+		        "group": 'Unknown',
+		        "description": "<strong>Norte de Santander, Colombia:</strong> Assailants stopped a Cootran Hacaritama Company bus at a community toll in North Santander, Colombia. The assailants then packed the bus with explosives and used it as a roadblock on the road between El Tarra and Convencion municipalities. There were no casualties reported. No group claimed responsibility for this attack; however, sources attributed it to the Mariscal Antonio Jose de Sucre Front of the Revolutionary Armed Forces of Colombia (FARC)."
+		    },
+		    {
+		    	"title": "Las Vegas",
+		        "lat": 36.1699,
+		        "lng": -115.1398,
+		        "group": 'Stephen Paddock',
+		        "description": "<strong>Las Vegas, Nevada, U.S.A.:</strong> 10/1/17: A gunman opened fire on a crowd of concertgoers at the Route 91 Harvest music festival on the Las Vegas Strip in Nevada, leaving 58 people dead and 851 injured."
+		    },
+		    {
+		    	"title": "New York City",
+		        "lat": 40.7128,
+		        "lng": -74.0060,
+		        "group": 'al Qaeda',
+		        "description": "<strong>New York City, New York, U.S.A.:</strong> 9/11/2001: 19 militants associated with the Islamic extremist group al-Qaeda hijacked four airplanes and carried out suicide attacks against targets in the United States. Two of the planes were flown into the twin towers of the World Trade Center in New York City, a third plane hit the Pentagon just outside Washington, D.C., and the fourth plane crashed in a field in Pennsylvania. Almost 3,000 people were killed during the 9/11 terrorist attacks."
+
+		    }
+
+		]
+
+		// Creating a global infoWindow object that will be reused by all markers
+		var infoWindow = new google.maps.InfoWindow();
+		
+
+		// Looping through the JSON data
+		for (var i = 0, length = json.length; i < length; i++) {
+			var data = json[i],
+				latLng = new google.maps.LatLng(data.lat, data.lng);
+				
+		var marker = new google.maps.Marker({
+            position: latLng,
+            map: map,
+            
+				});
+
+			// Creating a closure to retain the correct data, notice how I pass the current data in the loop into the closure (marker, data)
+			(function(marker, data) {
+
+				// Attaching a click event to the current marker
+				google.maps.event.addListener(marker, "click", function(e) {
+					infoWindow.setContent(data.description);
+					infoWindow.open(map, marker);
+				});
+
+
+			})(marker, data);
+
+		}
+
+	}
+
+})();
+
+//Specific Google Maps API Key for this map
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_yeq09nxxPDS-qNHGASRZ9jjTvuhNNlw&callback=initMap">
+    </script>
+  </body>
+</html>
+
+
